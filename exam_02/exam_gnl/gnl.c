@@ -23,8 +23,7 @@ char *ft_strjoin(char *s1, char *s2)
 int get_next_line(char **line)
 {
     char buf[2];
-    int i;
-    i = 0;
+
     if (!line || read(0, NULL, 0) < 0)
         return (-1);
     *line = (char *)malloc(1);
