@@ -32,7 +32,7 @@ typedef struct s_main {
 
 int		parser(t_main *m);
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
-t_cmd	*ft_lstnew(int num_of_args);
+t_cmd	*ft_lstnew(void);
 int		ft_strlen(const char *str);
 char	*ft_strdup(const char *str);
 int		print_error(char *str);
