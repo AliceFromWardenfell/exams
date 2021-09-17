@@ -16,12 +16,5 @@ int	main(int argc, char **argv)
 	initialization(&m, argc, argv);
 	if (parser(&m))
 		return (ERROR);
-	// while (m.cmd)
-	// {
-	// 	i = -1;
-	// 	while (++i < m.cmd->argc)
-	// 		printf("%d arg is %s\n", i + 1, m.cmd->args[i]);
-	// 	m.cmd = m.cmd->next;
-	// }
 	return (OK);
 }
