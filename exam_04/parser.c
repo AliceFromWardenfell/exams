@@ -76,6 +76,8 @@ int	make_cmd(t_main *m)
 			i++;
 			gl++;
 		}
+		if (gl < m->info.argc && !strcmp(m->info.argv[gl], "|"))
+			tmp->pipe_exist = TRUE;
 		gl++;
 		tmp = tmp->next;
 	}
@@ -97,7 +99,7 @@ int	parser(t_main *m)
 		i = -1;
 		while (++i < m->cmd->argc)
 			printf("argv[%d] = %s\n", i, m->cmd->args[i]);
-		printf("\n");
+		printf("pipe = %d\n", m->cmd->pipe_exist);
 		m->cmd = m->cmd->next;
 	}
 	return (OK);
