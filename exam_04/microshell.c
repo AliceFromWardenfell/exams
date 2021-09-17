@@ -16,6 +16,7 @@ int	main(int argc, char **argv)
 	initialization(&m, argc, argv);
 	if (parser(&m))
 		return (ERROR);
-	
+	if (executor(&m))
+		return (ERROR);
 	return (OK);
 }

@@ -2,6 +2,6 @@
 
 int	print_error(char *str)
 {
-	printf("ERROR: %s\n", str);
+	printf("error: %s\n", str);
 	return (ERROR);
 }

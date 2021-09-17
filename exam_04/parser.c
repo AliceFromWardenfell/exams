@@ -66,7 +66,7 @@ int	make_cmd(t_main *m)
 	while (gl < m->info.argc)
 	{
 		tmp->argc = count_args(m, gl);
-		tmp->args = (char **)malloc(tmp->argc * sizeof(char *));
+		tmp->args = (char **)malloc((tmp->argc + 1) * sizeof(char *));
 		if (!tmp->args)
 			return (ERROR); //handle errors
 		i = 0;
@@ -76,6 +76,7 @@ int	make_cmd(t_main *m)
 			i++;
 			gl++;
 		}
+		tmp->args[i] = NULL;
 		if (gl < m->info.argc && !strcmp(m->info.argv[gl], "|"))
 			tmp->pipe_exist = TRUE;
 		gl++;
@@ -87,20 +88,22 @@ int	make_cmd(t_main *m)
 int	parser(t_main *m)
 {	
 	int		i;
-	
+	t_cmd	*tmp;
+
 	if (pre_check(m))
 		return (ERROR);
 	printf("amout_of_cmds = %d\n", amount_of_cmds(m));
 	create_list(m, amount_of_cmds(m));
 	if (make_cmd(m))
 		return (ERROR);
-	while (m->cmd)
+	tmp = m->cmd;
+	while (tmp)
 	{
 		i = -1;
-		while (++i < m->cmd->argc)
-			printf("argv[%d] = %s\n", i, m->cmd->args[i]);
-		printf("pipe = %d\n", m->cmd->pipe_exist);
-		m->cmd = m->cmd->next;
+		while (++i < tmp->argc)
+			printf("argv[%d] = %s\n", i, tmp->args[i]);
+		printf("pipe = %d\n", tmp->pipe_exist);
+		tmp = tmp->next;
 	}
 	return (OK);
 }

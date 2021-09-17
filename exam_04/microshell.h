@@ -3,6 +3,7 @@
 
 # include <string.h>
 # include <stdlib.h>
+# include <unistd.h>
 # include <stdio.h> //remove
 
 # define OK 0
@@ -31,6 +32,7 @@ typedef struct s_main {
 } t_main;
 
 int		parser(t_main *m);
+int		executor(t_main *m);
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
 t_cmd	*ft_lstnew(void);
 int		ft_strlen(const char *str);
