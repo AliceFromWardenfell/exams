@@ -11,6 +11,7 @@ t_cmd	*ft_lstnew(void)
 	// new_cmd->argc = num_of_args;
 	new_cmd->pipe_exist = FALSE;
 	new_cmd->next = NULL;
+	new_cmd->pid = -1;
 	return (new_cmd);
 }
 

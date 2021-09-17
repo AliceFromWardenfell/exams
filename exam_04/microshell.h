@@ -4,6 +4,8 @@
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <stdio.h> //remove
 
 # define OK 0
@@ -16,6 +18,7 @@ typedef struct	s_cmd
 	int				pipe_exist;
 	char			**args;
 	int				argc;
+	pid_t			pid;
 	struct s_cmd	*next;
 } 				t_cmd;
 
@@ -23,6 +26,7 @@ typedef struct	s_info
 {
 	int			argc;
 	char		**argv;
+	char		**env;
 	int			num_of_cmds;
 } 				t_info;
 
