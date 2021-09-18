@@ -31,6 +31,9 @@ typedef struct	s_info
 } 				t_info;
 
 typedef struct s_main {
+	int				backup_fd_in;
+	int				backup_fd_out;
+	int				pipe[2];
 	struct s_info	info;
 	struct s_cmd	*cmd;
 } t_main;
@@ -42,5 +45,6 @@ t_cmd	*ft_lstnew(void);
 int		ft_strlen(const char *str);
 char	*ft_strdup(const char *str);
 int		print_error(char *str);
+int		fd_restore(t_main *m);
 
 #endif

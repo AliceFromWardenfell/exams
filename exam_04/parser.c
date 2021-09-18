@@ -87,23 +87,23 @@ int	make_cmd(t_main *m)
 
 int	parser(t_main *m)
 {	
-	int		i;
-	t_cmd	*tmp;
+	// int		i;
+	// t_cmd	*tmp;
 
 	if (pre_check(m))
 		return (ERROR);
-	printf("amout_of_cmds = %d\n", amount_of_cmds(m));
+	// printf("amout_of_cmds = %d\n", amount_of_cmds(m));
 	create_list(m, amount_of_cmds(m));
 	if (make_cmd(m))
 		return (ERROR);
-	tmp = m->cmd;
-	while (tmp)
-	{
-		i = -1;
-		while (++i < tmp->argc)
-			printf("argv[%d] = %s\n", i, tmp->args[i]);
-		printf("pipe = %d\n", tmp->pipe_exist);
-		tmp = tmp->next;
-	}
+	// tmp = m->cmd;
+	// while (tmp)
+	// {
+	// 	i = -1;
+	// 	while (++i < tmp->argc)
+	// 		printf("argv[%d] = %s\n", i, tmp->args[i]);
+	// 	printf("pipe = %d, pid = %d\n", tmp->pipe_exist, tmp->pid);
+	// 	tmp = tmp->next;
+	// }
 	return (OK);
 }
