@@ -27,7 +27,6 @@ typedef struct	s_info
 	int			argc;
 	char		**argv;
 	char		**env;
-	int			num_of_cmds;
 } 				t_info;
 
 typedef struct s_main {
@@ -41,7 +40,7 @@ typedef struct s_main {
 int		parser(t_main *m);
 int		executor(t_main *m);
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
-t_cmd	*ft_lstnew(void);
+t_cmd	*ft_lstnew(t_main *m, int argc, int i);
 int		ft_strlen(const char *str);
 char	*ft_strdup(const char *str);
 int		print_error(char *str);

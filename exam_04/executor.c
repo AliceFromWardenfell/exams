@@ -21,7 +21,7 @@ int	cd_b(t_cmd *cmd)
 		printf("error: cd: cannot change directory to %s\n", cmd->args[1]);
 		return (2);
 	}
-	printf("dir has been changed to %s\n", cmd->args[1]);
+	// printf("dir has been changed to %s\n", cmd->args[1]);
 	return (OK);
 }
 
