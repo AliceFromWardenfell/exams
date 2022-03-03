@@ -7,10 +7,10 @@ t_cmd	*ft_lstnew(t_main *m, int argc, int gl)
 
 	new_cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!new_cmd)
-		return (NULL);
+		fatal_error();
 	new_cmd->args = (char **)malloc((argc + 1) * sizeof(char *));
 	if (!new_cmd->args)
-		return (NULL);
+		fatal_error();
 	i = 0;
 	while (i < argc)
 		new_cmd->args[i++] = ft_strdup(m->info.argv[gl++]);

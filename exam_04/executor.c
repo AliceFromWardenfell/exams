@@ -15,10 +15,12 @@ int	cd_b(t_cmd *cmd)
 	while (cmd->args[argc])
 		argc++;
 	if (argc != 2)
-		return (print_error("cd: bad arguments"));
+		return (print_error_cd(0));
 	if (chdir(cmd->args[1]) == -1)
 	{
-		printf("error: cd: cannot change directory to %s\n", cmd->args[1]);
+		ft_putstr_er("error: cd: cannot change directory to ");
+		ft_putstr_er(cmd->args[1]);
+		ft_putstr_er("\n");
 		return (2);
 	}
 	// printf("dir has been changed to %s\n", cmd->args[1]);
@@ -31,13 +33,13 @@ int	execute(t_main *m, t_cmd *cmd, char **env)
 	if (!cmd->pid)
 	{
 		if (m->pipe[0] != -1)
-			close(m->pipe[0]);
+			if (close(m->pipe[0]) == -1)
+				fatal_error();
 		if (m->pipe[1] != -1)
-			close(m->pipe[1]);
-		if (execve(cmd->args[0], cmd->args, env) == -1)
-		{
-			printf("error: cannot execute %s\n", cmd->args[0]);
-		}
+			if (close(m->pipe[1]) == -1)
+				fatal_error();
+		execve(cmd->args[0], cmd->args, env);
+		print_error(cmd->args[0]);
 		exit(OK);
 	}
 	return (OK);
@@ -47,24 +49,29 @@ int	do_pipe(t_main *m, t_cmd *cmd, int *fd_in, int *fd_out)
 {
 	if (m->pipe[0] == -1)
 		*fd_in = 0;
-	dup2(*fd_in, 0);
+	if (dup2(*fd_in, 0) == -1)
+		fatal_error();
 	if (m->pipe[0] != -1)
 	{
-		close(m->pipe[0]);
+		if (close(m->pipe[0]) == -1)
+			fatal_error();
 		m->pipe[0] = -1;
 	}
 	if (cmd->pipe_exist)
 	{
-		pipe(m->pipe);
+		if (pipe(m->pipe) == -1)
+			fatal_error();
 		*fd_in = m->pipe[0];
 		*fd_out = m->pipe[1];
 	}
 	if (m->pipe[1] == -1)
 		*fd_out = 1;
-	dup2(*fd_out, 1);
+	if (dup2(*fd_out, 1) == -1)
+		fatal_error();
 	if (m->pipe[1] != -1)
 	{
-		close(m->pipe[1]);
+		if (close(m->pipe[1]) == -1)
+			fatal_error();
 		m->pipe[1] = -1;
 	}
 	return (OK);
@@ -72,8 +79,10 @@ int	do_pipe(t_main *m, t_cmd *cmd, int *fd_in, int *fd_out)
 
 int	fd_restore(t_main *m)
 {
-	dup2(m->backup_fd_in, 0);
-	dup2(m->backup_fd_out, 1);
+	if (dup2(m->backup_fd_in, 0) == -1)
+		fatal_error();
+	if (dup2(m->backup_fd_out, 1) == -1)
+		fatal_error();
 	return (OK);
 }	
 
@@ -90,16 +99,17 @@ int	executor(t_main *m)
 	{
 		do_pipe(m, tmp, &fd_in, &fd_out);
 		if (builtin_check(tmp))
-		{
-			if (cd_b(tmp) == ERROR)
-				return (ERROR);
-		}
+			cd_b(tmp);
 		else
-		{
-			if (execute(m, tmp, m->info.env) == ERROR)
-				return (ERROR);
-		}
+			execute(m, tmp, m->info.env);
 		fd_restore(m);
+		if (!tmp->pipe_exist)
+		{
+			if (tmp->pid != -1 && tmp->pid != 0)
+				if (waitpid(tmp->pid, NULL, 0) == -1)
+					fatal_error();
+			tmp->pid = -1;
+		}
 		tmp = tmp->next;
 	}
 	return (OK);

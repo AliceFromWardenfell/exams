@@ -12,6 +12,8 @@
 # define TRUE 1
 # define FALSE 0
 # define ERROR 1
+# define FATAL 2
+
 
 typedef struct	s_cmd
 {
@@ -45,5 +47,8 @@ int		ft_strlen(const char *str);
 char	*ft_strdup(const char *str);
 int		print_error(char *str);
 int		fd_restore(t_main *m);
+void	ft_putstr_er(char* str);
+void	fatal_error(void);
+int		print_error_cd(char *str);
 
 #endif

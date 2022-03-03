@@ -1,5 +1,10 @@
 #include "microshell.h"
 
+void	ft_putchar_er(char c)
+{
+	write(2, &c, 1);
+}
+
 int		ft_strlen(const char *str)
 {
 	int		len;
@@ -10,13 +15,21 @@ int		ft_strlen(const char *str)
 	return (len);
 }
 
+void	ft_putstr_er(char* str)
+{
+	int		i = -1;
+
+	while (++i < ft_strlen(str))
+		ft_putchar_er(str[i]);
+}
+
 char	*ft_strdup(const char *str)
 {
 	int		index;
 	char	*cp;
 
 	if (!(cp = (char*)malloc((ft_strlen(str) + 1) * sizeof(*str))))
-		return (NULL);
+		fatal_error();
 	index = 0;
 	while (index != ft_strlen(str))
 	{

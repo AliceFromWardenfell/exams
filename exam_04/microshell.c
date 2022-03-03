@@ -7,7 +7,11 @@ int	initialization(t_main *m, int argc, char ** argv, char **env)
 	m->info.env = env;
 	m->cmd = NULL;
 	m->backup_fd_in = dup(0);
+	if (m->backup_fd_in == -1)
+		fatal_error();
 	m->backup_fd_out = dup(1);
+	if (m->backup_fd_out == -1)
+		fatal_error();
 	m->pipe[0] = -1;
 	m->pipe[1] = -1;
 	return (OK);
@@ -20,9 +24,7 @@ int	wait_loop(t_cmd *cmd)
 		// printf("%d\n", cmd->pid);
 		if (cmd->pid != -1 && cmd->pid != 0)
 			if (waitpid(cmd->pid, NULL, 0) == -1)
-			{
-				return (print_error("waitpid"));
-			}
+				fatal_error();
 		cmd = cmd->next;
 	}
 	return (OK);
@@ -60,8 +62,10 @@ int	main(int argc, char **argv, char **env)
 	if (wait_loop(m.cmd))
 		return (ERROR);
 	fd_restore(&m);
-	close(m.backup_fd_in);
-	close(m.backup_fd_out);
+	if (close(m.backup_fd_in) == -1)
+		fatal_error();
+	if (close(m.backup_fd_out) == -1)
+		fatal_error();
 	list_free(&m);
 	return (OK);
 }
